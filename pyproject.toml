@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "cogniverse-by-evoq"
+version = "0.1.0"
+description = ""
+authors = ["Tigran Saatchyan <mr.saatchyan@gmail.com>"]
+license = "MIT License"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Django = "^4.2.5"
+psycopg = "^3.1.10"
+djangorestframework = "^3.14.0"
+pillow = "^10.0.1"
+
+[tool.poetry.group.dev.dependencies]
+python-dotenv = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
