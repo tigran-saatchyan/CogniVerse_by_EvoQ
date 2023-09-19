@@ -1,0 +1,101 @@
+[
+  {
+    "model": "payments.payment",
+    "fields": {
+      "user": 20,
+      "payment_date": "2023-09-19T16:23:43.765Z",
+      "course_bought": 3,
+      "lesson_bought": null,
+      "payed_price": 78000,
+      "payment_type": "cash"
+    }
+  },
+  {
+    "model": "payments.payment",
+    "fields": {
+      "user": 20,
+      "payment_date": "2023-09-19T16:23:43.765Z",
+      "course_bought": 3,
+      "lesson_bought": null,
+      "payed_price": 63000,
+      "payment_type": "transfer_to_account"
+    }
+  },
+  {
+    "model": "payments.payment",
+    "fields": {
+      "user": 18,
+      "payment_date": "2023-09-19T16:23:43.765Z",
+      "course_bought": 3,
+      "lesson_bought": null,
+      "payed_price": 36000,
+      "payment_type": "cash"
+    }
+  },
+  {
+    "model": "payments.payment",
+    "fields": {
+      "user": 18,
+      "payment_date": "2023-09-19T16:23:43.765Z",
+      "course_bought": null,
+      "lesson_bought": 7,
+      "payed_price": 95000,
+      "payment_type": "transfer_to_account"
+    }
+  },
+  {
+    "model": "payments.payment",
+    "fields": {
+      "user": 18,
+      "payment_date": "2023-09-19T16:23:43.765Z",
+      "course_bought": null,
+      "lesson_bought": 5,
+      "payed_price": 13000,
+      "payment_type": "cash"
+    }
+  },
+  {
+    "model": "payments.payment",
+    "fields": {
+      "user": 18,
+      "payment_date": "2023-09-19T16:23:43.765Z",
+      "course_bought": null,
+      "lesson_bought": 5,
+      "payed_price": 60000,
+      "payment_type": "cash"
+    }
+  },
+  {
+    "model": "payments.payment",
+    "fields": {
+      "user": 20,
+      "payment_date": "2023-09-19T16:23:43.765Z",
+      "course_bought": 4,
+      "lesson_bought": null,
+      "payed_price": 12000,
+      "payment_type": "transfer_to_account"
+    }
+  },
+  {
+    "model": "payments.payment",
+    "fields": {
+      "user": 19,
+      "payment_date": "2023-09-19T16:23:43.765Z",
+      "course_bought": null,
+      "lesson_bought": 6,
+      "payed_price": 50000,
+      "payment_type": "cash"
+    }
+  },
+  {
+    "model": "payments.payment",
+    "fields": {
+      "user": 18,
+      "payment_date": "2023-09-19T16:23:43.765Z",
+      "course_bought": 4,
+      "lesson_bought": null,
+      "payed_price": 13000,
+      "payment_type": "transfer_to_account"
+    }
+  }
+]
