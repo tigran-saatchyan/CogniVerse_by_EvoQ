@@ -25,13 +25,13 @@ class Payment(models.Model):
     payment_date = models.DateTimeField(
         auto_now_add=True
     )
-    course_bought = models.ForeignKey(
+    course = models.ForeignKey(
         Course,
         related_name="payment",
         on_delete=models.CASCADE,
         **NULLABLE
     )
-    lesson_bought = models.ForeignKey(
+    lesson = models.ForeignKey(
         Lesson,
         related_name="payment",
         on_delete=models.CASCADE,

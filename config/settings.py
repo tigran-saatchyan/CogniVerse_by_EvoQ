@@ -31,21 +31,34 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+]
 
+THIRD_PARTY_APPS = [
     'rest_framework',
+    'django_filters',
+]
 
+LOCAL_APPS = [
     'users.apps.UsersConfig',
     'courses.apps.CoursesConfig',
     'lessons.apps.LessonsConfig',
-
+    'payments.apps.PaymentsConfig',
 ]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
