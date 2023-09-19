@@ -24,15 +24,13 @@ from lessons.views import (
     LessonCreateView, LessonListView, LessonRetrieveView, LessonUpdateView,
     LessonDestroyView
 )
+from payments.views import PaymentsListView
 
 app_name = LessonsConfig.name
 
 router = DefaultRouter()
 
 urlpatterns = [
-    path('create/', LessonCreateView.as_view(), name='lesson-create'),
-    path('', LessonListView.as_view(), name='lesson-list'),
-    path('<int:pk>', LessonRetrieveView.as_view(), name='lesson-retrieve'),
-    path('update/<int:pk>', LessonUpdateView.as_view(), name='lesson-update'),
-    path('destroy/<int:pk>', LessonDestroyView.as_view(), name='lesson-destroy'),
+
+    path('', PaymentsListView.as_view(), name='payment-list'),
 ] + router.urls
