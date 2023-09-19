@@ -1,10 +1,12 @@
 from rest_framework import serializers
 
+from payments.serializers import PaymentsSerializer
 from users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.CharField(read_only=True)
+    payments = PaymentsSerializer(source="payment", many=True)
 
     class Meta:
         model = User
@@ -17,6 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
             'image',
             'country',
             'city',
+            'payments',
         )
 
 

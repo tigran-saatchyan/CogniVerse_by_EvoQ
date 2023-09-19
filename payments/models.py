@@ -43,3 +43,11 @@ class Payment(models.Model):
         max_length=50,
         choices=PAYMENT_TYPES
     )
+
+    def __str__(self):
+        return f'{self.user} - {self.course if self.course else self.lesson}'
+
+    class Meta:
+        verbose_name = 'payment'
+        verbose_name_plural = 'payments'
+        ordering = ('-payment_date',)
