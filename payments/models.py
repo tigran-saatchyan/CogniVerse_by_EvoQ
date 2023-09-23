@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from courses.models import Course
@@ -17,7 +18,7 @@ class Payment(models.Model):
     )
 
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         related_name="payment",
         on_delete=models.CASCADE,
         **NULLABLE

@@ -6,7 +6,7 @@ from users.models import User
 
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.CharField(read_only=True)
-    payments = PaymentsSerializer(source="payment", many=True)
+    payments = PaymentsSerializer(source="payment", many=True, read_only=True)
 
     class Meta:
         model = User
@@ -21,6 +21,16 @@ class UserSerializer(serializers.ModelSerializer):
             'city',
             'payments',
         )
+
+    def to_representation(self, instance):
+        user = self.context['request'].user
+        is_owner = user == instance
+        data = super().to_representation(instance)
+
+        if not is_owner:
+            data.pop('payments', None)
+            data.pop('last_name', None)
+        return data
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):

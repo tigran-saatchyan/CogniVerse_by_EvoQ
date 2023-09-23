@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from sevice.constants import NULLABLE
@@ -16,6 +17,12 @@ class Course(models.Model):
     )
     description = models.TextField(
         verbose_name="description",
+        **NULLABLE
+    )
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="course",
+        on_delete=models.CASCADE,
         **NULLABLE
     )
     date_added = models.DateTimeField(
