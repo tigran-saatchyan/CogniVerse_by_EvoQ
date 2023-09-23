@@ -22,6 +22,7 @@ class CoursesSerializer(serializers.ModelSerializer):
             'title',
             'image',
             'description',
+            'owner',
             'lessons',
             'lesson_counter'
         )

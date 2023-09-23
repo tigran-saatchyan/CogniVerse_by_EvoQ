@@ -1,0 +1,613 @@
+openapi: "3.0.0"
+info:
+    version: "1.0.0"
+    title: "CogniVerse API"
+    description: "API for CogniVerse Learning Management System"
+
+servers:
+    -   url: http://127.0.0.1:8000
+        description: Local development server
+
+paths:
+    /users/token/:
+        post:
+            summary: Obtain JWT token
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                    description: The email of the user
+                                password:
+                                    type: string
+                                    description: The password of the user
+            responses:
+                '200':
+                    description: JWT token obtained successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    access:
+                                        type: string
+                                    refresh:
+                                        type: string
+
+    /users/token/refresh/:
+        post:
+            summary: Refresh JWT token
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                refresh:
+                                    type: string
+                                    description: The refresh token
+            responses:
+                '200':
+                    description: JWT token refreshed successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    access:
+                                        type: string
+    /users/:
+        get:
+            summary: Retrieve a list of users
+            responses:
+                "200":
+                    description: A list of users
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/User"
+
+    /users/create/:
+        post:
+            summary: Create a new user
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/User"
+            responses:
+                "201":
+                    description: User created successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/User"
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+
+    /users/{userId}:
+        parameters:
+            -   name: userId
+                in: path
+                description: The unique identifier of the user
+                required: true
+                schema:
+                    type: string
+        get:
+            summary: Retrieve user details by ID
+            responses:
+                '200':
+                    description: User details
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+                '404':
+                    description: User not found
+                '500':
+                    description: Internal server error
+
+    /users/update/{userId}:
+        parameters:
+            -   name: userId
+                in: path
+                description: The unique identifier of the user
+                required: true
+                schema:
+                    type: string
+        put:
+            summary: Update user details by ID
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/User"
+            responses:
+                "200":
+                    description: User details updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/User"
+                "404":
+                    description: User not found
+                "500":
+                    description: Internal server error
+
+        patch:
+            summary: Partially update user details by ID
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/User"
+            responses:
+                "200":
+                    description: User details updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/User"
+                "404":
+                    description: User not found
+                "500":
+                    description: Internal server error
+
+    /users/delete/{userId}:
+        parameters:
+            -   name: userId
+                in: path
+                description: The unique identifier of the user
+                required: true
+                schema:
+                    type: string
+        delete:
+            summary: Delete user by ID
+            responses:
+                "204":
+                    description: User deleted successfully
+                "404":
+                    description: User not found
+                "500":
+                    description: Internal server error
+
+    /courses/:
+        get:
+            summary: Retrieve a list of courses
+            responses:
+                "200":
+                    description: A list of courses
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Course"
+
+    /courses/create/:
+        post:
+            summary: Create a new course
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Course"
+            responses:
+                "201":
+                    description: Course created successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Course"
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+
+    /courses/{courseId}:
+        parameters:
+            -   name: courseId
+                in: path
+                description: The unique identifier of the course
+                required: true
+                schema:
+                    type: string
+        get:
+            summary: Retrieve course details by ID
+            responses:
+                "200":
+                    description: Course details
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Course"
+                "404":
+                    description: Course not found
+                "500":
+                    description: Internal server error
+
+    /courses/update/{courseId}:
+        parameters:
+            -   name: courseId
+                in: path
+                description: The unique identifier of the course
+                required: true
+                schema:
+                    type: string
+        put:
+            summary: Update course details by ID
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Course"
+            responses:
+                "200":
+                    description: Course details updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Course"
+                "404":
+                    description: Course not found
+                "500":
+                    description: Internal server error
+
+        patch:
+            summary: Partially update course details by ID
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Course"
+            responses:
+                "200":
+                    description: Course details updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Course"
+                "404":
+                    description: Course not found
+                "500":
+                    description: Internal server error
+
+    /courses/delete/{courseId}:
+        parameters:
+            -   name: courseId
+                in: path
+                description: The unique identifier of the course
+                required: true
+                schema:
+                    type: string
+        delete:
+            summary: Delete course by ID
+            responses:
+                "204":
+                    description: Course deleted successfully
+                "404":
+                    description: Course not found
+                "500":
+                    description: Internal server error
+
+    /lessons/:
+        get:
+            summary: Retrieve a list of lessons
+            responses:
+                "200":
+                    description: A list of lessons
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Lesson"
+
+    /lessons/create/:
+        post:
+            summary: Create a new lesson
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Lesson"
+            responses:
+                "201":
+                    description: Lesson created successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Lesson"
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+
+    /lessons/{lessonId}:
+        parameters:
+            -   name: lessonId
+                in: path
+                description: The unique identifier of the lesson
+                required: true
+                schema:
+                    type: string
+        get:
+            summary: Retrieve lesson details by ID
+            responses:
+                "200":
+                    description: Lesson details
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Lesson"
+                "404":
+                    description: Lesson not found
+                "500":
+                    description: Internal server error
+
+    /lessons/update/{lessonId}:
+        parameters:
+            -   name: lessonId
+                in: path
+                description: The unique identifier of the lesson
+                required: true
+                schema:
+                    type: string
+        put:
+            summary: Update lesson details by ID
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Lesson"
+            responses:
+                "200":
+                    description: Lesson details updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Lesson"
+                "404":
+                    description: Lesson not found
+                "500":
+                    description: Internal server error
+
+        patch:
+            summary: Partially update lesson details by ID
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Lesson"
+            responses:
+                "200":
+                    description: Lesson details updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Lesson"
+                "404":
+                    description: Lesson not found
+                "500":
+                    description: Internal server error
+
+    /lessons/delete/{lessonId}:
+        parameters:
+            -   name: lessonId
+                in: path
+                description: The unique identifier of the lesson
+                required: true
+                schema:
+                    type: string
+        delete:
+            summary: Delete lesson by ID
+            responses:
+                "204":
+                    description: Lesson deleted successfully
+                "404":
+                    description: Lesson not found
+                "500":
+                    description: Internal server error
+
+    /payments/:
+        get:
+            summary: Retrieve a list of payments
+            responses:
+                "200":
+                    description: A list of payments
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Payment"
+
+    /payments/create/:
+        post:
+            summary: Create a new payment
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Payment"
+            responses:
+                "201":
+                    description: Payment created successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Payment"
+                "400":
+                    description: Bad request
+                "500":
+                    description: Internal server error
+
+    /payments/{paymentId}:
+        parameters:
+            -   name: paymentId
+                in: path
+                description: The unique identifier of the payment
+                required: true
+                schema:
+                    type: string
+        get:
+            summary: Retrieve payment details by ID
+            responses:
+                "200":
+                    description: Payment details
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Payment"
+                "404":
+                    description: Payment not found
+                "500":
+                    description: Internal server error
+
+    /payments/update/{paymentId}:
+        parameters:
+            -   name: paymentId
+                in: path
+                description: The unique identifier of the payment
+                required: true
+                schema:
+                    type: string
+        put:
+            summary: Update payment details by ID
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Payment"
+            responses:
+                "200":
+                    description: Payment details updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Payment"
+                "404":
+                    description: Payment not found
+                "500":
+                    description: Internal server error
+
+        patch:
+            summary: Partially update payment details by ID
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Payment"
+            responses:
+                "200":
+                    description: Payment details updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Payment"
+                "404":
+                    description: Payment not found
+                "500":
+                    description: Internal server error
+
+    /payments/delete/{paymentId}:
+        parameters:
+            -   name: paymentId
+                in: path
+                description: The unique identifier of the payment
+                required: true
+                schema:
+                    type: string
+        delete:
+            summary: Delete payment by ID
+            responses:
+                "204":
+                    description: Payment deleted successfully
+                "404":
+                    description: Payment not found
+                "500":
+                    description: Internal server error
+
+components:
+    schemas:
+        User:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                email:
+                    type: string
+            required:
+                - name
+                - email
+
+        Course:
+            type: object
+            properties:
+                id:
+                    type: string
+                title:
+                    type: string
+                description:
+                    type: string
+            required:
+                - title
+                - description
+
+        Lesson:
+            type: object
+            properties:
+                id:
+                    type: string
+                title:
+                    type: string
+                description:
+                    type: string
+            required:
+                - title
+                - description
+
+        Payment:
+            type: object
+            properties:
+                id:
+                    type: string
+                amount:
+                    type: number
+                payment_date:
+                    type: string
+            required:
+                - amount
+                - payment_date
+
+    securitySchemes:
+        ApiKey:
+            type: apiKey
+            in: header
+            name: X-Api-Key
+
+security:
+    -   ApiKey: [ ]

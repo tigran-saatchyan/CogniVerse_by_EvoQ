@@ -1,8 +1,10 @@
+from django.conf import settings
 from django.db import models
 
 from courses.models import Course
 from sevice.constants import NULLABLE
 from sevice.utils import save_picture
+from users.models import User
 
 
 class Lesson(models.Model):
@@ -23,6 +25,12 @@ class Lesson(models.Model):
     image = models.ImageField(
         upload_to=save_picture,
         verbose_name='preview image',
+        **NULLABLE
+    )
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="lesson",
+        on_delete=models.CASCADE,
         **NULLABLE
     )
     date_added = models.DateTimeField(
