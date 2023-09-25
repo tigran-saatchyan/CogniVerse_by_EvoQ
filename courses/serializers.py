@@ -2,9 +2,14 @@ from rest_framework import serializers
 
 from courses.models import Course
 from lessons.serializers import LessonSerializer
+from lessons.validators import UrlValidator
 
 
 class CoursesSerializer(serializers.ModelSerializer):
+    is_subscribed = serializers.BooleanField(
+        source='subscriber.all.exists',
+        read_only=True
+    )
     lessons = LessonSerializer(
         source='lesson_set',
         many=True,
@@ -17,6 +22,7 @@ class CoursesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
+        validators = [UrlValidator(field='description')]
         fields = (
             'id',
             'title',
@@ -24,5 +30,6 @@ class CoursesSerializer(serializers.ModelSerializer):
             'description',
             'owner',
             'lessons',
-            'lesson_counter'
+            'lesson_counter',
+            'is_subscribed'
         )

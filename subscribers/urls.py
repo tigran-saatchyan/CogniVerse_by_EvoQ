@@ -14,18 +14,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf import settings
-from django.conf.urls.static import static
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from rest_framework.routers import DefaultRouter
+
+from subscribers.apps import SubscribersConfig
+from subscribers.views import SubscribeView
+
+app_name = SubscribersConfig.name
+
+router = DefaultRouter()
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('users/', include('users.urls', namespace='users')),
-    path('courses/', include('courses.urls', namespace='courses')),
-    path('lessons/', include('lessons.urls', namespace='lessons')),
-    path('payments/', include('payments.urls', namespace='payments')),
-    path('subscribe/', include('subscribers.urls', namespace='subscribers')),
-]
-
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                  path(
+                      'course/<int:course_id>/',
+                      SubscribeView.as_view(),
+                      name='subscribe-create'
+                  ),
+              ] + router.urls
