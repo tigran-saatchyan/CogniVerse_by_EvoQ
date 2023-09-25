@@ -28,9 +28,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Set DJANGO_SETTINGS_MODULE
+      run: echo "export DJANGO_SETTINGS_MODULE=config.settings" >> $GITHUB_ENV
+
     - name: Set environment variables from secrets
       run: |
-        echo "DJANGO_SETTINGS_MODULE=${{ secrets.DJANGO_SETTINGS_MODULE }}" >> $GITHUB_ENV
         echo "DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" >> $GITHUB_ENV
       shell: bash
 
