@@ -52,6 +52,7 @@ LOCAL_APPS = [
     'courses.apps.CoursesConfig',
     'lessons.apps.LessonsConfig',
     'payments.apps.PaymentsConfig',
+    'subscribers.apps.SubscribersConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
