@@ -5,6 +5,51 @@ from users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the User model.
+
+    This serializer is used to convert User model instances into JSON data
+    and vice versa.
+    It defines the fields to be included in the serialized representation of
+    User objects.
+
+    Attributes:
+        model (User): The model class that this serializer is associated with.
+        fields (tuple): The fields to include in the serialized representation.
+
+    Methods:
+        to_representation(instance): Custom method to conditionally include
+        or exclude fields based on the request user.
+
+    Usage:
+        - Use this serializer to convert User model instances into JSON data
+        for API responses.
+        - Customize the 'to_representation' method to conditionally include
+        or exclude fields based on user roles.
+
+    Example:
+        ```python
+        from rest_framework import serializers
+
+        class MyUserSerializer(UserSerializer):
+            # Additional custom fields or overrides can be added here.
+
+            class Meta:
+                model = User
+                fields = (
+                    'pk',
+                    'email',
+                    'first_name',
+                    'last_name',
+                    'telephone',
+                    'image',
+                    'country',
+                    'city',
+                    'payments',
+                )
+        ```
+    """
+
     email = serializers.CharField(read_only=True)
     payments = PaymentsSerializer(source="payment", many=True, read_only=True)
 
@@ -34,6 +79,26 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
+    """
+    Serializer for user registration.
+
+    This serializer is used for creating new user accounts during the
+    registration process.
+
+    Attributes:
+        model (User): The model class that this serializer is associated with.
+        fields (tuple): The fields to include in the serialized representation.
+
+    Methods:
+        validate(data): Custom method to validate password confirmation
+        during registration.
+        create(validated_data): Custom method to create a new user account.
+
+    Usage:
+        - Use this serializer for user registration and account creation in
+        your API.
+    """
+
     pk = serializers.IntegerField(read_only=True)
     password = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
