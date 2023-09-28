@@ -30,6 +30,17 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CORS_ALLOWED_ORIGINS = [
+    os.getenv('CORS_ALLOWED_HOST')
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    os.getenv('CSRF_TRUSTED_FRONTEND'),
+    os.getenv('CSRF_TRUSTED_BACKEND')
+]
+
+CORS_ALLOW_ALL_ORIGINS = os.getenv('CORS_ALLOW_ALL_ORIGINS')
+
 # Application definition
 
 DJANGO_APPS = [
@@ -45,6 +56,7 @@ THIRD_PARTY_APPS = [
     'drf_yasg',
     'rest_framework',
     'rest_framework_simplejwt',
+    'corsheaders',
     'django_filters',
 ]
 
@@ -80,6 +92,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -200,5 +214,5 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 TEST_DATABASE_PREFIX = 'test_'
 
 SWAGGER_SETTINGS = {
-   'USE_SESSION_AUTH': False
+    'USE_SESSION_AUTH': False
 }
