@@ -8,6 +8,32 @@ from users.models import User
 
 
 class Payment(models.Model):
+    """
+    Model representing a payment.
+
+    This model represents a payment made by a user for a course or a lesson.
+    It includes fields for the user
+    making the payment, payment date, associated course or lesson, payment
+    amount, and payment type.
+
+    Attributes:
+        user (User): The user who made the payment.
+        payment_date (DateTimeField): The date and time when the payment was
+        made (auto-generated).
+        course (Course): The course for which the payment was made (nullable).
+        lesson (Lesson): The lesson for which the payment was made (nullable).
+        payed_price (int): The amount paid for the course or lesson.
+        payment_type (str): The type of payment, chosen from predefined
+        choices.
+
+    Methods:
+        __str__(): Returns a string representation of the payment, including
+        the user and associated course/lesson.
+
+    Usage:
+        - Use this model to represent payments made by users in your Django
+        application.
+    """
 
     PAYMENT_TYPE_CASH = 'cash'
     PAYMENT_TYPE_TRANSFER_TO_ACCOUNT = 'transfer_to_account'
@@ -39,7 +65,6 @@ class Payment(models.Model):
         **NULLABLE
     )
     payed_price = models.IntegerField()
-
     payment_type = models.CharField(
         max_length=50,
         choices=PAYMENT_TYPES

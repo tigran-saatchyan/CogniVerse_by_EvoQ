@@ -42,6 +42,7 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+    'drf_yasg',
     'rest_framework',
     'rest_framework_simplejwt',
     'django_filters',
@@ -197,3 +198,7 @@ FIXTURE_DIRS = [
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 TEST_DATABASE_PREFIX = 'test_'
+
+SWAGGER_SETTINGS = {
+   'USE_SESSION_AUTH': False
+}

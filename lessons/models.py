@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.db import models
-
 from courses.models import Course
 from sevice.constants import NULLABLE
 from sevice.utils import save_picture
@@ -8,6 +7,34 @@ from users.models import User
 
 
 class Lesson(models.Model):
+    """
+    Model representing a lesson.
+
+    This model represents an individual lesson within a course. It includes
+    fields for the lesson's title,
+    description, associated course, preview image, owner, and timestamps for
+    creation and modification.
+
+    Attributes:
+        title (str): The title of the lesson (up to 150 characters).
+        description (str): The description of the lesson (textual content).
+        course (Course): The course to which the lesson belongs.
+        image (ImageField): The preview image associated with the lesson.
+        owner (User): The user who owns or created the lesson.
+        date_added (DateTimeField): The date and time when the lesson was
+        added (auto-generated).
+        date_modified (DateTimeField): The date and time when the lesson was
+        last modified (auto-updated).
+
+    Methods:
+        __str__(): Returns a string representation of the lesson, which is
+        its title.
+
+    Usage:
+        - Use this model to represent individual lessons in a course within
+        your Django application.
+    """
+
     title = models.CharField(
         max_length=150,
         verbose_name='title'

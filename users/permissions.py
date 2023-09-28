@@ -4,6 +4,33 @@ from payments.models import Payment
 
 
 class IsOwnerOrManager(BasePermission):
+    """
+    Custom permission to check if the user is the owner or a manager.
+
+    This permission class is used to control access to certain actions based
+    on the user's role.
+    Users who are staff members (managers) are restricted from creating or
+    deleting objects.
+
+    Attributes:
+        message (str): A message to be returned when permission is denied.
+
+    Methods:
+        has_permission(request, view): Check if the user has permission to
+        perform the requested action.
+
+    Usage:
+        - Use this permission class to control access to create and delete
+        actions based on user roles.
+
+    Example:
+        ```python
+        class MyViewSet(viewsets.ModelViewSet):
+            permission_classes = [IsOwnerOrManager]
+            ...
+        ```
+    """
+
     message = ""
 
     def has_permission(self, request, view):
@@ -30,6 +57,33 @@ class IsOwnerOrManager(BasePermission):
 
 
 class IsPayed(BasePermission):
+    """
+    Custom permission to check if the user has paid for content.
+
+    This permission class is used to restrict access to certain actions
+    based on payment status.
+    Users who have paid for content or are staff members (admins) have
+    access to protected content.
+
+    Attributes:
+        message (str): A message to be returned when permission is denied.
+
+    Methods:
+        has_permission(request, view): Check if the user has permission to
+        perform the requested action.
+
+    Usage:
+        - Use this permission class to control access to content based on
+        payment status.
+
+    Example:
+        ```python
+        class MyViewSet(viewsets.ModelViewSet):
+            permission_classes = [IsPayed]
+            ...
+        ```
+    """
+
     message = ""
 
     def has_permission(self, request, view):
@@ -59,6 +113,29 @@ class IsPayed(BasePermission):
 
 
 class IsOwnerOrReadOnly(BasePermission):
+    """
+    Custom permission to check if the user is the owner or has read-only
+    access.
+
+    This permission class is used to allow owners full access while
+    providing read-only access to others.
+
+    Methods:
+        has_object_permission(request, view, obj): Check if the user has
+        permission to perform the requested action.
+
+    Usage:
+        - Use this permission class to provide read-only access to objects
+        for non-owners.
+
+    Example:
+        ```python
+        class MyViewSet(viewsets.ModelViewSet):
+            permission_classes = [IsOwnerOrReadOnly]
+            ...
+        ```
+    """
+
     def has_object_permission(self, request, view, obj):
         if request.method in SAFE_METHODS:
             return True
