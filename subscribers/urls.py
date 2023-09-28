@@ -28,6 +28,6 @@ urlpatterns = [
                   path(
                       'course/<int:course_id>/',
                       SubscribeView.as_view(),
-                      name='subscribe-create'
+                      name='subscribe'
                   ),
               ] + router.urls

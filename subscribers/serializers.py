@@ -6,4 +6,7 @@ class SubscriberSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subscriber
-        fields = '__all__'
+        fields = (
+            'user',
+            'course'
+        )

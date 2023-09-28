@@ -26,7 +26,8 @@ class LessonListView(generics.ListAPIView):
     pagination_class = LessonsPaginator
 
     serializer_class = LessonSerializer
-    queryset = Lesson.objects.all()
+
+    queryset = Lesson.objects.all().order_by('id')
 
 
 class LessonRetrieveView(generics.RetrieveAPIView):
