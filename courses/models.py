@@ -70,6 +70,7 @@ class Course(models.Model):
         on_delete=models.CASCADE,
         **NULLABLE
     )
+    price = models.IntegerField(default=0)
     date_added = models.DateTimeField(
         auto_now_add=True,
         verbose_name="date added"

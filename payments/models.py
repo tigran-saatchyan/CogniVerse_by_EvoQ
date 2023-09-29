@@ -22,8 +22,8 @@ class Payment(models.Model):
         made (auto-generated).
         course (Course): The course for which the payment was made (nullable).
         lesson (Lesson): The lesson for which the payment was made (nullable).
-        payed_price (int): The amount paid for the course or lesson.
-        payment_type (str): The type of payment, chosen from predefined
+        paid_price (int): The amount paid for the course or lesson.
+        payment_method (str): The type of payment, chosen from predefined
         choices.
 
     Methods:
@@ -35,12 +35,14 @@ class Payment(models.Model):
         application.
     """
 
-    PAYMENT_TYPE_CASH = 'cash'
-    PAYMENT_TYPE_TRANSFER_TO_ACCOUNT = 'transfer_to_account'
+    PAYMENT_METHOD_CASH = 'cash'
+    PAYMENT_METHOD_CARD = 'card'
+    PAYMENT_METHOD_TRANSFER_TO_ACCOUNT = 'transfer_to_account'
 
-    PAYMENT_TYPES = (
-        (PAYMENT_TYPE_CASH, 'Cash'),
-        (PAYMENT_TYPE_TRANSFER_TO_ACCOUNT, 'Transfer to account'),
+    PAYMENT_METHODS = (
+        (PAYMENT_METHOD_CASH, 'Cash'),
+        (PAYMENT_METHOD_CARD, 'Card'),
+        (PAYMENT_METHOD_TRANSFER_TO_ACCOUNT, 'Transfer to account'),
     )
 
     user = models.ForeignKey(
@@ -64,16 +66,18 @@ class Payment(models.Model):
         on_delete=models.CASCADE,
         **NULLABLE
     )
-    payed_price = models.IntegerField()
-    payment_type = models.CharField(
+    paid_price = models.IntegerField()
+    payment_method = models.CharField(
         max_length=50,
-        choices=PAYMENT_TYPES
+        choices=PAYMENT_METHODS,
+        **NULLABLE
     )
 
     def __str__(self):
         return f'{self.user} - {self.course if self.course else self.lesson}'
 
     class Meta:
+        unique_together = [["user", "course"], ["user", "lesson"]]
         verbose_name = 'payment'
         verbose_name_plural = 'payments'
         ordering = ('-payment_date',)

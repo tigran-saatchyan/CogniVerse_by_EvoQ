@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from lessons.models import Lesson
 from lessons.validators import UrlValidator
 
@@ -39,8 +40,20 @@ class LessonSerializer(serializers.ModelSerializer):
                 validators = [UrlValidator(field='description')]
         ```
     """
+    price = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_price(instance):
+        return instance.price // 100
 
     class Meta:
         model = Lesson
-        fields = ('id', 'title', 'description', 'image', 'owner')
+        fields = (
+            'id',
+            'title',
+            'description',
+            'price',
+            'image',
+            'owner'
+        )
         validators = [UrlValidator(field='description')]
