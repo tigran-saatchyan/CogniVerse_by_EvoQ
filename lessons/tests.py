@@ -84,7 +84,8 @@ class LessonTestCase(APITestCase):
             'title': 'Test Lesson',
             'description': 'Lorem ipsum dolor sit amet.',
             'image': None,
-            'owner': 1
+            'owner': 1,
+            'price': 0
         }
         url = reverse('lessons:lesson-create')
 
@@ -185,8 +186,8 @@ class LessonTestCase(APITestCase):
         Payment.objects.create(
             user=self.user,
             lesson=self.lesson1,
-            payed_price=60000,
-            payment_type='cash'
+            paid_price=60000,
+            payment_method='cash'
         )
 
         url = reverse(
@@ -202,7 +203,8 @@ class LessonTestCase(APITestCase):
             "title": self.lesson1.title,
             "description": self.lesson1.description,
             "image": None,
-            "owner": self.lesson1.owner.pk
+            "owner": self.lesson1.owner.pk,
+            'price': 0
         }
 
         self.assertEqual(response.data, expected_data)

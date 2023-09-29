@@ -7,7 +7,7 @@
       "course": 3,
       "lesson": null,
       "payed_price": 78000,
-      "payment_type": "cash"
+      "payment_method": "cash"
     }
   },
   {
@@ -18,7 +18,7 @@
       "course": 3,
       "lesson": null,
       "payed_price": 63000,
-      "payment_type": "transfer_to_account"
+      "payment_method": "transfer_to_account"
     }
   },
   {
@@ -29,7 +29,7 @@
       "course": 3,
       "lesson": null,
       "payed_price": 36000,
-      "payment_type": "cash"
+      "payment_method": "cash"
     }
   },
   {
@@ -40,7 +40,7 @@
       "course": null,
       "lesson": 7,
       "payed_price": 95000,
-      "payment_type": "transfer_to_account"
+      "payment_method": "transfer_to_account"
     }
   },
   {
@@ -51,7 +51,7 @@
       "course": null,
       "lesson": 5,
       "payed_price": 13000,
-      "payment_type": "cash"
+      "payment_method": "cash"
     }
   },
   {
@@ -62,7 +62,7 @@
       "course": null,
       "lesson": 5,
       "payed_price": 60000,
-      "payment_type": "cash"
+      "payment_method": "cash"
     }
   },
   {
@@ -73,7 +73,7 @@
       "course": 4,
       "lesson": null,
       "payed_price": 12000,
-      "payment_type": "transfer_to_account"
+      "payment_method": "transfer_to_account"
     }
   },
   {
@@ -84,7 +84,7 @@
       "course": null,
       "lesson": 6,
       "payed_price": 50000,
-      "payment_type": "cash"
+      "payment_method": "cash"
     }
   },
   {
@@ -95,7 +95,7 @@
       "course": 4,
       "lesson": null,
       "payed_price": 13000,
-      "payment_type": "transfer_to_account"
+      "payment_method": "transfer_to_account"
     }
   }
 ]

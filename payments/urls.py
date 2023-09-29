@@ -14,23 +14,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path
-
 from rest_framework.routers import DefaultRouter
 
 from lessons.apps import LessonsConfig
-from lessons.views import (
-    LessonCreateView, LessonListView, LessonRetrieveView, LessonUpdateView,
-    LessonDestroyView
-)
-from payments.views import PaymentsListView
+from payments.views import PaymentsListView, PaymentAPI
 
 app_name = LessonsConfig.name
 
 router = DefaultRouter()
 
 urlpatterns = [
-
-    path('', PaymentsListView.as_view(), name='payment-list'),
-] + router.urls
+                  path('', PaymentsListView.as_view(), name='payment-list'),
+                  path(
+                      'make_payment/<str:model_name>/<int:model_id>',
+                      PaymentAPI.as_view(),
+                      name='make_payment'
+                      ),
+              ] + router.urls

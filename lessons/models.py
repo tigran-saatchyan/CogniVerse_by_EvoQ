@@ -49,6 +49,7 @@ class Lesson(models.Model):
         on_delete=models.CASCADE,
         **NULLABLE
     )
+    price = models.IntegerField(default=0)
     image = models.ImageField(
         upload_to=save_picture,
         verbose_name='preview image',

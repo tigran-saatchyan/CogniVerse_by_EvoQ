@@ -63,6 +63,12 @@ class CoursesSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
+    price = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_price(instance):
+        return instance.price // 100
+
     class Meta:
         model = Course
         validators = [UrlValidator(field='description')]
@@ -73,6 +79,7 @@ class CoursesSerializer(serializers.ModelSerializer):
             'description',
             'owner',
             'lessons',
+            'price',
             'lesson_counter',
             'is_subscribed'
         )

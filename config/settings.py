@@ -39,7 +39,9 @@ CSRF_TRUSTED_ORIGINS = [
     os.getenv('CSRF_TRUSTED_BACKEND')
 ]
 
-CORS_ALLOW_ALL_ORIGINS = os.getenv('CORS_ALLOW_ALL_ORIGINS')
+CORS_ALLOW_ALL_ORIGINS = os.getenv(
+    "CORS_ALLOW_ALL_ORIGINS", 'False'
+).lower() in ('true', '1', 'True')
 
 # Application definition
 
@@ -216,3 +218,9 @@ TEST_DATABASE_PREFIX = 'test_'
 SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False
 }
+
+STRIPE_BASE_URL = 'https://api.stripe.com'
+
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
+STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET")
