@@ -104,7 +104,6 @@ THIRD_PARTY_MIDDLEWARE = [
 
 MIDDLEWARE = DJANGO_MIDDLEWARE + THIRD_PARTY_MIDDLEWARE
 
-
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -180,8 +179,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(
+        minutes=int(os.getenv('ACCESS_TOKEN_LIFETIME_MINUTES', 15))
+    ),
+    'REFRESH_TOKEN_LIFETIME': timedelta(
+        days=int(os.getenv('REFRESH_TOKEN_LIFETIME_DAYS', 1))
+    ),
 }
 
 # Internationalization
@@ -231,3 +234,12 @@ STRIPE_BASE_URL = 'https://api.stripe.com'
 STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY")
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
 STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET")
+
+CELERY_BROKER_URL = "redis://127.0..0.1:6379/0"
+CELERY_RESULT_BACKEND = "redis://127.0..0.1:6379/0"
+
+CELERY_BEAT_SCHEDULE = {
+    'task-name': {
+
+    }
+}

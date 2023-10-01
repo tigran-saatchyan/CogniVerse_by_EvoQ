@@ -1,9 +1,11 @@
+from django.utils import timezone
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
+from rest_framework.permissions import AllowAny
 
+from courses.models import Course
 from lessons.models import Lesson
 from lessons.paginators import LessonsPaginator
-from lessons.serializers import LessonSerializer
+from lessons.serializers import LessonSerializer, LessonCreateUpdateSerializer
 from users.permissions import IsOwnerOrManager, IsPayed
 
 
@@ -34,7 +36,7 @@ class LessonCreateView(generics.CreateAPIView):
     """
 
     permission_classes = [IsOwnerOrManager]
-    serializer_class = LessonSerializer
+    serializer_class = LessonCreateUpdateSerializer
     queryset = Lesson.objects.all()
 
     def perform_create(self, serializer):
@@ -130,8 +132,17 @@ class LessonUpdateView(generics.UpdateAPIView):
     """
 
     permission_classes = [IsOwnerOrManager]
-    serializer_class = LessonSerializer
+    serializer_class = LessonCreateUpdateSerializer
     queryset = Lesson.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        course = Course.objects.filter(pk=instance.course.pk)
+
+        course.update(
+            date_modified=timezone.now()
+        )
+        return super().update(request, *args, **kwargs)
 
 
 class LessonDestroyView(generics.DestroyAPIView):

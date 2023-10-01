@@ -57,5 +57,5 @@ def check_payment_method(value):
 
 def product_owner_validation(item):
 
-    if Payment.objects.get(**item).exists():
+    if Payment.objects.filter(**item).exists():
         raise serializers.ValidationError('You already bought this product')
