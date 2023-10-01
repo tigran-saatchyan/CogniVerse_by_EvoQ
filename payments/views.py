@@ -5,10 +5,10 @@ from rest_framework import generics, status
 from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from stripe.error import StripeError
 
 from payments.models import Payment
 from payments.serializers import PaymentsSerializer, CardInformationSerializer
+from payments.services import stripe_card_payment, save_payment_if_valid
 from payments.validators import product_owner_validation
 
 
@@ -86,12 +86,12 @@ class PaymentAPI(APIView):
             data_dict = serializer.data
 
             product_price = product.price
-            response = self.stripe_card_payment(
+            response = stripe_card_payment(
                 data_dict=data_dict,
                 product_price=product_price
             )
 
-            self.save_payment_if_valid(response, payment)
+            save_payment_if_valid(response, payment)
 
         else:
             response = {
@@ -100,94 +100,3 @@ class PaymentAPI(APIView):
             }
 
         return Response(response)
-
-    @staticmethod
-    def stripe_card_payment(data_dict, product_price):
-        try:
-            card_details = {
-                "type": "card",
-                "card": {
-                    "number": data_dict['card_number'],
-                    "exp_month": data_dict['expiry_month'],
-                    "exp_year": data_dict['expiry_year'],
-                    "cvc": data_dict['cvc'],
-                },
-            }
-
-            payment_intent = stripe.PaymentIntent.create(
-                amount=product_price,
-                currency='rub',
-                payment_method="pm_card_visa",
-                payment_method_types=[card_details["type"]],
-                automatic_payment_methods={
-                    "enabled": False,
-                },
-            )
-
-            try:
-                payment_confirm = stripe.PaymentIntent.confirm(
-                    payment_intent['id']
-                )
-                payment_intent_modified = stripe.PaymentIntent.retrieve(
-                    payment_intent['id']
-                )
-            except StripeError as e:
-                print(e)
-                payment_intent_modified = stripe.PaymentIntent.retrieve(
-                    payment_intent['id']
-                )
-                payment_confirm = {
-                    "stripe_payment_error": f"Failed with message: \n {e}",
-                    "code": payment_intent_modified['last_payment_error'][
-                        'code'],
-                    "message": payment_intent_modified['last_payment_error'][
-                        'message'],
-                    'status': "Failed"
-                }
-            if (payment_intent_modified
-                    and payment_intent_modified['status'] == 'succeeded'):
-                response = {
-                    'message': "Card Payment Success",
-                    'status': status.HTTP_200_OK,
-                    "card_details": card_details,
-                    "payment_intent": payment_intent_modified,
-                    "payment_confirm": payment_confirm
-                }
-            else:
-                response = {
-                    'message': "Card Payment Failed",
-                    'status': status.HTTP_400_BAD_REQUEST,
-                    "card_details": card_details,
-                    "payment_intent": payment_intent_modified,
-                    "payment_confirm": payment_confirm
-                }
-        except Exception as e:
-            response = {
-                'error': f"Your card number is incorrect: {e}",
-                'status': status.HTTP_400_BAD_REQUEST,
-                "payment_intent": {"id": "Null"},
-                "payment_confirm": {'status': "Failed"}
-            }
-        return response
-
-    @staticmethod
-    def save_payment_if_valid(response, payment):
-        if response['payment_confirm'] and response[
-            'status'
-        ] == status.HTTP_200_OK:
-            payment_confirm = response['payment_confirm']
-
-            payment_method = stripe.PaymentMethod.retrieve(
-                payment_confirm['payment_method']
-            )
-
-            payment['paid_price'] = int(
-                payment_confirm['amount_received']
-            ) // 100,
-            payment['payment_method'] = payment_method['type']
-
-            # TODO: проверка об оплате проверяется на уровне базы
-            #       (unique_togather).
-            #       Добавить проверку об оплате на уровне Stripe
-
-            Payment.objects.create(**payment)

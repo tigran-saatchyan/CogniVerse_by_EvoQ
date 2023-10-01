@@ -53,7 +53,34 @@ class LessonSerializer(serializers.ModelSerializer):
             'title',
             'description',
             'price',
+            'course',
             'image',
             'owner'
         )
         validators = [UrlValidator(field='description')]
+
+
+class LessonCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lesson
+        fields = (
+            'id',
+            'title',
+            'description',
+            'price',
+            'course',
+            'image',
+            'owner'
+        )
+        read_only_fields = ['id', 'owner']
+        validators = [UrlValidator(field='description')]
+
+    def create(self, validated_data):
+        validated_data['price'] = int(float(validated_data.pop('price')) * 100)
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        instance.price = int(float(validated_data.pop('price')) * 100)
+        instance.save()
+        return instance
+

@@ -41,15 +41,15 @@ class Lesson(models.Model):
     )
     description = models.TextField(
         verbose_name='description',
-        **NULLABLE
+
     )
     course = models.ForeignKey(
         Course,
         verbose_name='course',
         on_delete=models.CASCADE,
-        **NULLABLE
+
     )
-    price = models.IntegerField(default=0)
+    price = models.IntegerField()
     image = models.ImageField(
         upload_to=save_picture,
         verbose_name='preview image',
