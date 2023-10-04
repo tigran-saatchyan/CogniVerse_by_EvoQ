@@ -6,6 +6,7 @@ from courses.models import Course
 from lessons.models import Lesson
 from lessons.paginators import LessonsPaginator
 from lessons.serializers import LessonSerializer, LessonCreateUpdateSerializer
+from subscribers.services import schedule_notification
 from users.permissions import IsOwnerOrManager, IsPayed
 
 
@@ -136,12 +137,14 @@ class LessonUpdateView(generics.UpdateAPIView):
     queryset = Lesson.objects.all()
 
     def update(self, request, *args, **kwargs):
+        time_now = timezone.now()
         instance = self.get_object()
-        course = Course.objects.filter(pk=instance.course.pk)
+        course = Course.objects.filter(pk=instance.course.pk).first()
 
-        course.update(
-            date_modified=timezone.now()
-        )
+        course.date_modified = time_now
+        course.save()
+
+        schedule_notification(course, time_now)
         return super().update(request, *args, **kwargs)
 
 
