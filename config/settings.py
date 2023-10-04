@@ -32,10 +32,12 @@ DEBUG = os.getenv(
 
 ALLOWED_HOSTS = []
 
+# CORS settings
 CORS_ALLOWED_ORIGINS = [
     os.getenv('CORS_ALLOWED_HOST')
 ]
 
+# CSRF protection settings
 CSRF_TRUSTED_ORIGINS = [
     os.getenv('CSRF_TRUSTED_FRONTEND'),
     os.getenv('CSRF_TRUSTED_BACKEND')
@@ -127,7 +129,6 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-
 DB_USERNAME = os.environ.get("DB_USERNAME")
 DB_PASSWORD = os.environ.get("DB_PASSWORD")
 DB_HOST = os.environ.get("DB_HOST")
@@ -192,11 +193,11 @@ SIMPLE_JWT = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tbilisi'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -229,17 +230,30 @@ SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False
 }
 
+# Stripe integration / configuration
 STRIPE_BASE_URL = 'https://api.stripe.com'
 
 STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY")
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
 STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET")
 
-CELERY_BROKER_URL = "redis://127.0..0.1:6379/0"
-CELERY_RESULT_BACKEND = "redis://127.0..0.1:6379/0"
+# Celery configuration
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
 
-CELERY_BEAT_SCHEDULE = {
-    'task-name': {
+CELERY_IMPORTS = ("subscribers.tasks",)
 
-    }
-}
+CELERY_TIMEZONE = TIME_ZONE
+
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_BROKER_CHANNEL_ERROR_RETRY = True
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# Email settings
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_TLS = True

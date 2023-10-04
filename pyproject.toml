@@ -19,6 +19,7 @@ django-cors-headers = "^4.2.0"
 stripe = "^6.6.0"
 celery = "^5.3.4"
 django-celery-beat = "^2.5.0"
+redis = "^5.0.1"
 
 [tool.poetry.group.dev.dependencies]
 python-dotenv = "^1.0.0"

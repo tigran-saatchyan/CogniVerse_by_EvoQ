@@ -81,6 +81,8 @@ class LessonCreateUpdateSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance.price = int(float(validated_data.pop('price')) * 100)
+        for field_name, new_value in validated_data.items():
+            setattr(instance, field_name, new_value)
         instance.save()
         return instance
 
