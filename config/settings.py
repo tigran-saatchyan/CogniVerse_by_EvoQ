@@ -104,7 +104,9 @@ THIRD_PARTY_MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-MIDDLEWARE = DJANGO_MIDDLEWARE + THIRD_PARTY_MIDDLEWARE
+LOCAL_MIDDLEWARE = []
+
+MIDDLEWARE = DJANGO_MIDDLEWARE + THIRD_PARTY_MIDDLEWARE + LOCAL_MIDDLEWARE
 
 ROOT_URLCONF = 'config.urls'
 
@@ -186,6 +188,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(
         days=int(os.getenv('REFRESH_TOKEN_LIFETIME_DAYS', 1))
     ),
+    'UPDATE_LAST_LOGIN': True,
 }
 
 # Internationalization
@@ -241,7 +244,10 @@ STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET")
 CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
 
-CELERY_IMPORTS = ("subscribers.tasks",)
+CELERY_IMPORTS = (
+    "subscribers.tasks",
+    "users.tasks"
+)
 
 CELERY_TIMEZONE = TIME_ZONE
 
@@ -249,6 +255,13 @@ CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_BROKER_CHANNEL_ERROR_RETRY = True
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+CELERY_BEAT_SCHEDULE = {
+    'user-deactivation': {
+        'task': 'users.tasks.activity_check',
+        'schedule': timedelta(days=1),
+    },
+}
 
 # Email settings
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')

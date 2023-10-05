@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework.permissions import AllowAny
 
 from users.models import User
 from users.permissions import IsOwnerOrReadOnly
@@ -41,7 +42,7 @@ class UserRegistrationView(generics.CreateAPIView):
         - Include this view in your API to enable user registration and
         account creation functionality.
     """
-
+    permission_classes = [AllowAny]
     serializer_class = UserRegistrationSerializer
     queryset = User.objects.all()
 

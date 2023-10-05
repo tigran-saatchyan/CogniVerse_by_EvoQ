@@ -83,6 +83,10 @@ class User(AbstractUser):
         verbose_name='creation date',
         auto_now_add=True
     )
+    last_login = models.DateTimeField(
+        verbose_name='last login date',
+        **NULLABLE
+    )
     date_modified: datetime = models.DateTimeField(
         verbose_name='date modified',
         auto_now=True
